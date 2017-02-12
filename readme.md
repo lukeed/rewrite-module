@@ -1,6 +1,6 @@
 # rewrite-module [![Build Status](https://travis-ci.org/lukeed/rewrite-module.svg?branch=master)](https://travis-ci.org/lukeed/rewrite-module)
 
-> Rewrite a module&#39;s contents &amp; Export as a clone for immediate use! No eval()
+> Rewrite a module's exports by applying string transformations, then return for immediate use! No `eval()`!
 
 
 ## Install
