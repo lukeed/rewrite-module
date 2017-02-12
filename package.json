@@ -21,7 +21,9 @@
   "keywords": [
     ""
   ],
-  "dependencies": {},
+  "dependencies": {
+    "require-like": "^0.1.2"
+  },
   "devDependencies": {
     "ava": "^0.15.2",
     "nyc": "^7.1.0",
