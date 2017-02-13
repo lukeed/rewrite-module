@@ -24,32 +24,33 @@ const read = require('fs').readFileSync;
 const rewriteModule = require('rewrite-module');
 
 const file = join(__dirname, 'foobar.js');
-const data = read(file, 'utf8');
+const data = read(file, 'utf8').replace(/FOOBAR/g, 'foobar');
 
-rewriteModule(file, data.replace(/FOOBAR/g, 'foobar'));
+rewriteModule({file, data});
 //=> {foo: 'foobar_foo', bar: 'foobar_bar'}
 ```
 
 
 ## API
 
-### rewriteModule(filepath, contents)
+### rewriteModule(options)
 
 Returns a new, useable module that's comprised of the `contents` you provided. The return-module directly reflects the input given; so any defined `exports` will be available as object keys.
 
 > **Note:** You can receive a `function` instead of an `object` if that's what you defined. Perhaps a [refresher on exports](https://www.sitepoint.com/understanding-module-exports-exports-node-js/#exporting-a-module)?
 
-#### filepath
+#### options.data
+
+Type: `string`<br>
+Required: `true`
+
+The transformed string to be evaluated in a new VM.
+
+#### options.file
 
 Type: `string`
 
 The original module's filepath.
-
-#### contents
-
-Type: `string`
-
-The transformed string to be evaluated in a new VM.
 
 
 ## License
