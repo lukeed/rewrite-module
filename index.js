@@ -1,23 +1,34 @@
 'use strict';
 
 const Script = require('vm').Script;
-const reqLike = require('require-like');
+const dirname = require('path').dirname;
 
 const box = {};
 
-module.exports = function (filepath, contents) {
-	if (typeof filepath !== 'string') {
-		throw new TypeError(`Filepath must be a string; got ${typeof filepath}`);
-	} else if (typeof contents !== 'string') {
-		throw new TypeError(`Contents must be a string; got ${typeof contents}`);
+module.exports = object => {
+	object = object || {};
+	const file = object.file;
+	const data = object.data;
+
+	if (typeof data !== 'string') {
+		throw new TypeError(`Data must be a string; got ${typeof data}`);
+	} else if (file && typeof file !== 'string') {
+		throw new TypeError(`File must be a string; got ${typeof file}`);
 	}
+
 	// setup mock env
 	Object.assign(box, global);
 	box.module = {exports};
 	box.exports = exports;
-	box.require = reqLike(filepath);
+	box.require = require;
+
+	if (file) {
+		box.__filename = file;
+		box.__dirname = dirname(file);
+	}
+
 	// define a script
-	const scr = new Script(contents);
+	const scr = new Script(data);
 	// `eval()` new content elsewhere
 	scr.runInNewContext(box);
 	// return new `tasks` object
