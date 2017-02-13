@@ -1,6 +1,6 @@
 {
   "name": "rewrite-module",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rewrite a module's exports by applying string transformations, then return for immediate use! No eval()",
   "license": "MIT",
   "repository": "lukeed/rewrite-module",
