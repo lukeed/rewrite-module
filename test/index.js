@@ -15,8 +15,8 @@ const tmp1 = data1
 	.replace('function foo', 'foo = function');
 const tmp2 = data2.replace('FOOBAR', 'bar');
 
-const out1 = fn(file1, tmp1);
-const out2 = fn(file2, tmp2);
+const out1 = fn({file: file1, data: tmp1});
+const out2 = fn({file: file2, data: tmp2});
 
 test('out1: returns an object', t => t.is(typeof out1, 'object'));
 test('out1: returns all keys', t => t.is(Object.keys(out1).length, 2));
@@ -29,22 +29,21 @@ test('value of out1.foo', t => t.is(out1.foo(16, 3), 19));
 test('out2: returns a function', t => t.is(typeof out2, 'function'));
 test('value of out2', t => t.is(out2(), 'bar'));
 
-test('filepath must be defined', t => {
-	const err = t.throws(() => fn(), TypeError);
-	t.is(err.message, 'Filepath must be a string; got undefined');
+test('data must be defined', t => {
+	const err = t.throws(() => fn({}), TypeError);
+	t.is(err.message, 'Data must be a string; got undefined');
+});
+
+test('data must be string', t => {
+	const err = t.throws(() => fn({data: 123}), TypeError);
+	t.is(err.message, 'Data must be a string; got number');
+});
+
+test('filepath can be undefined', t => {
+	t.truthy(fn({data: 'true'}));
 });
 
 test('filepath must be string', t => {
-	const err = t.throws(() => fn(123), TypeError);
-	t.is(err.message, 'Filepath must be a string; got number');
-});
-
-test('contents must be defined', t => {
-	const err = t.throws(() => fn('foo'), TypeError);
-	t.is(err.message, 'Contents must be a string; got undefined');
-});
-
-test('contents must be string', t => {
-	const err = t.throws(() => fn('foo', 123), TypeError);
-	t.is(err.message, 'Contents must be a string; got number');
+	const err = t.throws(() => fn({data: '"foo"', file: 123}), TypeError);
+	t.is(err.message, 'File must be a string; got number');
 });
